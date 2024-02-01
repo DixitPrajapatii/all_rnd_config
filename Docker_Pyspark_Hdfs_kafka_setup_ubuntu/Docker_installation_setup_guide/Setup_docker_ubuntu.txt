@@ -1,0 +1,59 @@
+# Docker lets you build,test and deploy appplication quickly.
+# Please follow the below step by step guide to install docker manually on virtual box/ubuntu linux system.
+
+=> For installation we need to download some docker file from official docker website.
+website: https://docs.docker.com/engine/install/ubuntu/  (search for docker for ubuntu in browser and visit the website docker docs)
+=> check for the option "install it manually" in webpage and click on it.
+
+step1: visit the official website which is showing in terminal (https://download.docker.com/linux/ubuntu/dists)
+step2: go to jammy/pool/stable/amd64/
+# after this it will show list of all the files like containerd.io 
+
+step3: download the following file with the latest version
+    file 1. containerd.io_version.deb
+    file 2. docker-ce_version.deb
+    file 3. docker-ce-cli_version.deb
+    file 4. docker-buildx-plugin_version.deb
+    file 5. docker-compose-plugin_.deb
+
+# This all the following file you need to download with specific version requirement.
+
+=> create a folder in directory : name: Docker
+=> move this download file from download folder to Docker folder (you can copy manually or with cmd )
+=> after coping the file open terminal/commandprompt and go to that directory with the following cmd
+cd /docker
+=> now you need to provide the file name with the command to start the installtion of the docker 
+command : sudo dpkg -i containerd.io_version.deb docker-ce_version.deb docker-ce-cli_version.deb docker-buildx-plugin_version.deb docker-compose-plugin_.deb
+=> after adding command press: Enter
+#make sure you choose those file which we download from the docker website (total 5 files with version specification)
+
+IMP: => it will install the docker. If it give the error for specific file versionning then please visit the docker website which is mentioned earlier for download the files and try with the lower version of the file.
+
+# after installing you can check with the following cmd to check if the docker install successfully.
+cmd: 
+sudo service docker start
+sudo docker run hello-world ( this will fetch the )
+
+
+# after this check the version for the docker and docker-compose file with the following cmd
+sudo docker --version
+sudo docker-compose --version
+
+(if it print successfully the version number then your docker and docker-compose are configured successfully)
+
+# For docker-compose file (if version not showing for the docker-compose)
+to install the docker-compose follow the below steps
+
+sudo apt-get install docker-compose
+
+(this will install the docker-compose package)
+
+
+#You have successfully configure the docker you can now access the service.
+
+
+
+
+
+
+

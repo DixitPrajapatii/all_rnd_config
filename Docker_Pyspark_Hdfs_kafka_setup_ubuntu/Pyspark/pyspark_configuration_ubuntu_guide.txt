@@ -1,0 +1,124 @@
+# Pyspark - Python API for apache spark, an open source ,distributed computing framework and set of libraries for real-time, large-scale data processing.
+# follow the below steps to install in the ubuntu machine 
+# you can check the correct working directory with the command : pwd
+# if you are root then you dont need to type sudo you can follow direct without sudo command.
+
+=> create a new directory with the following command
+command : mkdir Pyspark
+
+=> go to that directory  (cd ./Pyspark)
+
+# you need to copy the docker-hadoop files which we downloaded for docker installation from github. 
+
+=> run the following command to copy the file in current pyspark folder
+command : sudo cp __sourcefilepath__/. .
+
+# after adding all the files to pyspark directory we need to make some changes in the docker-compose.yml file. 
+
+# make sure you in docker-hadoop directory. You can go with cd command.
+
+=> run the command to update the file information docker-compose.yml
+command : nano docker-compose.yml
+
+# This will open the file and in edite mode made the below changes. 
+
+# there is pre define structure already there go to last and add the following line of code before volumes:
+
+# add below code before volumns:
+
+spark-master:
+  container_name: master
+  image: bitnami/spark:latest
+  command: bin/spark-class org.apache.spark.deploy.master.Master
+  ports:
+    - "9090:8080"
+    - "7077:7077"
+
+spark-worker-1:
+  container_name: worker1
+  image: bitnami/spark:latest
+  command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+  depends_on:
+    - spark-master
+  environment:
+    SPARK_MODE: worker
+    SPARK_WORKER_CORES: 2
+    SPARK_WORKER_MEMORY: 3g
+    SPARK_MASTER_URL: spark://spark-master:7077
+
+spark-worker-2:
+  container_name: worker2
+  image: bitnami/spark:latest
+  command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+  depends_on:
+    - spark-master
+  environment:
+    SPARK_MODE: worker
+    SPARK_WORKER_CORES: 2
+    SPARK_WORKER_MEMORY: 3g
+    SPARK_MASTER_URL: spark://spark-master:7077
+
+
+# make sure this code is align with the previous content like the indentation are prefect. 
+# you can set up as many as worker you want.
+# after adding this content press (ctrl + o and Enter) write down the file and exit with (ctrl+x) command.
+
+=> after successfully update the file run the following steps.
+
+command : sudo docker-compose up
+
+# this will create the container with spark worker.
+# dont stop the terminal open new terminal after the previous execution.
+
+=> open new terminal
+=> go to pyspark directory
+=> run the below command:
+command: docker ps 
+(this will show the framework details with container id)
+
+# after successfully execution you can access the content via following link in browser
+# localhost:9070 (for hadoop )
+# localhost:9090 (sparkmaster)
+
+# to execute the master node run the following command:
+command: docker exec -it master bash
+
+# to go to namenode run the following command
+command: docker exec -it namenode bash
+
+# to exit type (exit) and enter 
+
+# you have successfully configure the pyspark with two worker.
+
+--------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+
+# adding some addition command to execute and perform operation for the python file.
+
+#to execute master run the following command.
+command: docker exec -it master bash
+
+# to perform operation in specific file (like demo.py) run the following command
+
+# in pyspark/docker directory
+command : docker-compose exec master spark-submit --master spark://172.19.0.6:7077 demo.py
+
+(for the url you can get url in spark ui and copy url from there (spark://172.19.0.3:7077))
+
+# to install java run the following command
+
+command: docker exec master pip install py4j
+
+# to delete the container or remove run the following command:
+command: docker-compose down
+
+-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+

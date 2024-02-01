@@ -1,0 +1,92 @@
+# Kafka installation guide for ubuntu
+# you dont need to run sudo if you are root user.
+# for kafka there are four main part(zookeeper, Topics, Producer, Consumer)
+# we need to configure zookeeper for kafka. It is require to run kafka
+
+# download kafka from browser with the following link 
+link : https://kafka.apache.org/downloads (if not work then search for kafka for linux and go to official apache kafka website)
+# download the latest version like (Scala 2.13 -kafka_2.13-3.6.1.tgz(asc,sha512))
+
+
+# create the directory kafka and move the download file to this directory with copy command or manually.
+# open command prompt and redirect to kafka folder. (cd ./kafka)
+
+# we need to create the dockerfile with the following command.
+command : sudo nano dockerfile
+=> write down the below content in dockerfile
+     
+FROM ubuntu
+RUN apt-get update
+COPY . .
+CMD ['bash']
+
+=> save the file and exit the file (save: ctrl+o, enter ,exit: ctrl+z )
+
+=> run the following command to build the kafka 
+command: sudo docker build . -t kafka
+(it will run all the command mentioned in dockerfile)
+
+=> run the following command to run kafka
+command: docker run -it kafka sh
+
+# after running the above command you will redirect to kafka directory with (#) symbol.
+
+# now we need to extract the tar file which we downloaded from browser (kafka tar file)
+=> run the following command
+command:  tar -xzf kafka_2.13-3.6.1.tgz
+
+# after executing the command you will get new file with the same name kafka_2.13-3.6.1
+# go to that directory (cd ./kafka_2.13-3.6.1)
+
+# we need to install java for running kafka topics. Run the following command 
+command: apt-get install openjdk-8-jdk
+
+# Now we need to create a zookeeper configuration after successfully configure the above steps.
+
+=> to run zookeeper server execute below command.
+command: bin/zookeeper-server-start.sh  config/zookeeper.properties
+
+# Once execute the command open the new terminal and don't close the process inbetween.
+
+# in new terminal redirect to the existing directory (./kafka)
+=> run the following command to check the container id 
+command: docker ps
+
+# you need to go to that container with container id (copy container id and paste with below command)
+=> command: docker exec -it 1ec6e38b4c4f(containerid) bash
+
+#after adding the command you will redirect to container then list all the file
+command to list all : (ls)
+
+=> go to kafka_2.13-3.6.1 folder (inside container only)
+
+# after successfully enter in kafka_2.13-3.6.1 folder we need to create topic for producer and consumer test. 
+# run the following command to create topic in kafka_2.13-3.6.1 folder only.
+
+
+=> command: bin/kafka-topics.sh --create -topic Demo --bootstrap-server localhost:9092
+(if you will get network error then run the following command to set up network ( command: docker network create app-tier . --driver bridge))
+=>> then run the command again it will create the network bridge
+
+=> after successfully execute write down the producer command in current terminal to create producer
+
+command : bin/kafka-console-producer.sh --topic Demo --bootstrap-server localhost:9092
+
+=> open another terminal after successfully run the above command.
+=> redirect to that directory and go to container with the above steps.
+=> in container go to kafka_2.13-3.6.1 and run the following command to execute consumer.
+
+#Consumer setup
+command : bin/kafka-console-consumer.sh --topic Demo --bootstrap-server localhost:9092
+
+#( You can write down anything with producer and you can check that will reflect in consumern page)
+
+# You have successfully setup the kafka with Demo topic, producer and consumer.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

@@ -1,0 +1,34 @@
+# To create kafka directly with the docker 
+# requirement : docker preinstall
+# please follow the command to set up kafka directly in docker
+
+step-1: pull request for zookeeper and kafka
+
+command:docker pull bitnami/zookeeper:latest 
+command:docker pull bitnami/kafka
+
+step-2: we need to set up network to make container talk each other.
+
+command:docker network create app-tier --driver bridge
+
+step-3: run the command to create the demo topic
+
+command:
+docker run -d --name kafka-server --hostname kafka-server \
+    --network app-tier \
+    -e KAFKA_CFG_NODE_ID=0 \
+    -e KAFKA_CFG_PROCESS_ROLES=controller,broker \
+    -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
+    -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
+    -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-server:9093 \
+    -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+    bitnami/kafka:latest
+
+step-4:
+
+command:
+docker run -it --rm \
+    --network app-tier \
+    bitnami/kafka:latest kafka-topics.sh --list  --bootstrap-server kafka-server:9092
+
+    

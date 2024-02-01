@@ -1,0 +1,47 @@
+# Hdfs - Hadoop distributed File System.
+# follow the below step to install the hdfs using docker in ubuntu
+# Make sure you have docker install in your pc then after you can follow this steps to configure the hdfs.
+# run the follow command to update all the set up in ubuntu machine
+command 1: sudo apt-get update
+command 2: sudo apt-get upgrade
+
+=> create the directory name as Hdfs with the following cmd
+command: mkdir Hdfs
+=> redirect/ go to that directory Hdfs with cd ./Hdfs command
+
+# now we need to get the files from the github.
+# we need to initiallize the git in our hdfs folder so we can clone the repository directly in our folder.
+
+=> initiallize the git with the following command
+command: apt-get install git ( to install the git in ubuntu)
+command 2: git init.
+
+=> after initiallize the git you need to fetch the data from the git with the following command.
+command: git clone https://github.com/big-data-europe/docker-hadoop.git
+# press Enter
+
+# if the clonning not done successfully then you can download it manually in github directory with the following link.
+# git link for docker-hadoop : https://github.com/big-data-europe/docker-hadoop
+
+=> after adding/clonning the file go to docker-hadoop directory and check all the files are present.
+=> all the files are present then follow the below command to run the docker-compose
+
+command: sudo docker-compose up
+
+# The command will create the namenode so you can access it via the ui utility.
+
+# dont close this terminal it will run .
+
+# open new terminal and go to docker-hadoop directory and add the following command
+command : docker ps
+
+# this will show the container with id 
+
+# you have set up successfully. 
+
+# you can access in browser with the following link 
+link : localhost:9870    (update the port number if require)
+
+
+
+
